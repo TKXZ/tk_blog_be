@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import process from 'node:process';
+import path from 'node:path';
 
 import cors from './middleware/cors';
 
@@ -19,6 +20,8 @@ process.on('exit', () => {
 const app: Express = express();
 app.use(cors);
 app.use(express.json());
+
+app.use(express.static(path.join(process.cwd(), 'public')));
 
 app.use('/article', articleRouter);
 
