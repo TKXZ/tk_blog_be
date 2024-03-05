@@ -50,18 +50,17 @@ router.get('/detail/:id', async (req, res) => {
   // 先检查解析后的html文件是否存在
   // 存在 - 直接读取
   // 不存在 - 解析后读取
-  // if (checkExistHtml(title)) {
-  //   htmlFilePath = path.join(PUBLIC_ARTICLE_FOLDER_PATH, title, title + '.html');
-  //   catalogFilePath = path.join(PUBLIC_ARTICLE_FOLDER_PATH, title, title + '.json');
-  // } else {
-  // }
-
-  const parsedMd = await parseMd(filePath, title);
-  if (parsedMd) {
-    const { articleContent, articleCatalog: ac } = parsedMd;
-    articleCatalog = ac;
-    htmlFilePath = article2Html(articleContent, title);
-    catalogFilePath = saveCatalog2File(title, articleCatalog);
+  if (checkExistHtml(title)) {
+    htmlFilePath = path.join(PUBLIC_ARTICLE_FOLDER_PATH, title, title + '.html');
+    catalogFilePath = path.join(PUBLIC_ARTICLE_FOLDER_PATH, title, title + '.json');
+  } else {
+    const parsedMd = await parseMd(filePath, title);
+    if (parsedMd) {
+      const { articleContent, articleCatalog: ac } = parsedMd;
+      articleCatalog = ac;
+      htmlFilePath = article2Html(articleContent, title);
+      catalogFilePath = saveCatalog2File(title, articleCatalog);
+    }
   }
 
   const htmlContent = fs.readFileSync(htmlFilePath).toString('utf-8');
