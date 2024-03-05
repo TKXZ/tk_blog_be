@@ -17,8 +17,14 @@ export const article2Html = (markdown: string, title: string = 'title'): string 
     content: markdown,
   }, (err: any, data: any) => {
     if (err) throw new Error('Markdown ejs template render error');
-    const articleFolder = fs.mkdirSync(path.join(PUBLIC_ARTICLE_FOLDER_PATH, `${title}`), { recursive: true }) as string;
-    fs.writeFileSync(path.join(articleFolder, `${title}.html`), data);
+
+    const curArticleFolderPath = path.join(PUBLIC_ARTICLE_FOLDER_PATH, `${title}`)
+    if (!fs.existsSync(curArticleFolderPath)) {
+      const articleFolderPath = fs.mkdirSync(curArticleFolderPath, { recursive: true }) as string;
+      fs.writeFileSync(path.join(articleFolderPath, `${title}.html`), data);
+    } else {
+      fs.writeFileSync(path.join(curArticleFolderPath, `${title}.html`), data);
+    }
   })
 
   return path.join(PUBLIC_ARTICLE_FOLDER_PATH, title, `${title}.html`);
@@ -38,14 +44,12 @@ export const checkExistHtml = (title: string): boolean => {
  * 存储目录数据到json
  * @param title 
  * @param catalogArr 
+ * @returns 目录文件地址
  */
 export const saveCatalog2File = (title: string, catalogArr: Catalog[]): string => {
   const catalogPath = path.join(PUBLIC_ARTICLE_FOLDER_PATH, title, title + '.json');
-  fs.writeFile(catalogPath, JSON.stringify(catalogArr), (err) => {
-    if (err) {
-      console.error('存入目录数据错误', err);
-    }
-  });
+
+  fs.writeFileSync(catalogPath, JSON.stringify(catalogArr));
 
   return catalogPath;
 }

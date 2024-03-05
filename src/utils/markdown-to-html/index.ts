@@ -4,10 +4,10 @@
  */
 
 import marked from '../marked';
-import { Catalog, parseCatalog } from '../marked/extention';
+import { Catalog, resolveMdStr } from '../marked/extention';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
-import { parseImg } from '../upload/upload-image';
+import { decorationMdHtmlStr } from '../../routes/article/decoration';
 import { ParsedMd } from './types/markdown-to-html';
 
 /**
@@ -15,16 +15,15 @@ import { ParsedMd } from './types/markdown-to-html';
  * @param filePath 
  * @returns 
  */
-const parseMdSync = (filePath: string, title: string): string => {
-  let mdContent = '';
+const parseMdSync = (filePath: string, title: string): string | void => {
   try {
     const md = fs.readFileSync(filePath, 'utf-8');
-    mdContent = marked.parse(md, { async: false }) as string;
-    mdContent = parseImg(mdContent, title)
+    let mdHtmlStr = marked.parse(md, { async: false }) as string;
+    mdHtmlStr = decorationMdHtmlStr(mdHtmlStr, title)
+    return mdHtmlStr;
   } catch (err: any) {
     console.error('解析md文件错误', err.message);
   }
-  return mdContent;
 }
 
 
@@ -33,20 +32,18 @@ const parseMdSync = (filePath: string, title: string): string => {
  * @param filePath 
  * @returns 
  */
-const parseMd = async (filePath: string, title: string): Promise<ParsedMd> => {
-  let mdContent = '';
-  let catalogArr: Catalog[] = [];
+const parseMd = async (filePath: string, title: string): Promise<ParsedMd | void> => {
   try {
-    const md = await fsp.readFile(filePath, 'utf-8');
-    mdContent = await marked.parse(md);
-    catalogArr = await parseCatalog(md);
-    mdContent = parseImg(mdContent, title)
+    const mdStr = await fsp.readFile(filePath, 'utf-8');
+    let mdHtmlStr = await marked.parse(mdStr);
+    const { catalogArr } = await resolveMdStr(mdStr);
+    mdHtmlStr = decorationMdHtmlStr(mdHtmlStr, title)
+    return {
+      articleContent: mdHtmlStr,
+      articleCatalog: catalogArr
+    }
   } catch (err: any) {
     console.error('解析md文件错误', err);
-  }
-  return {
-    articleContent: mdContent,
-    articleCatalog: catalogArr
   };
 }
 

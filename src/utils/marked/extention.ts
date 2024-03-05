@@ -2,11 +2,28 @@ import type { Tokens } from "marked";
 import type { Catalog } from "./types/extention";
 import marked from ".";
 
+interface ExtentionParsedMd {
+  catalogArr: Catalog[],
+}
+
+/**
+ * 处理 md 字符串入口
+ * @param mdStr 
+ * @returns 
+ */
+export const resolveMdStr = async (mdStr: string): Promise<ExtentionParsedMd> => {
+  const catalogArr = await parseCatalog(mdStr);
+
+  return {
+    catalogArr,
+  }
+}
+
 /**
  * 解析 md 目录
  * @param mdStr 
  */
-export const parseCatalog = async (mdStr: string): Promise<Catalog[]> => {
+const parseCatalog = async (mdStr: string): Promise<Catalog[]> => {
   const tokens = marked.lexer(mdStr);
   let catalogArr = null;
   catalogArr = tokens.filter((val, index) => {

@@ -6,11 +6,11 @@
 </head>
 
 <body>
-  <h1>【Nodejs】- 基本工具配置</h1>
-<h2>1. npm 管理工具</h2>
-<h3>1.1 重要的 npm 命令</h3>
+  <h1 id="【Nodejs】- 基本工具配置">【Nodejs】- 基本工具配置</h1>
+<h2 id="1. npm 管理工具">1. npm 管理工具</h2>
+<h3 id="1.1 重要的 npm 命令">1.1 重要的 npm 命令</h3>
 <hr>
-<ul>
+<ul class="markdown-body-ul">
 <li><p><code>npm init</code> - 用于初始化 nodejs 项目， 创建 <code>package.json</code> 文件</p>
 <pre><code class="hljs language-sh">package name: (<span class="hljs-built_in">test</span>)		<span class="hljs-comment"># nodejs 包名</span>
 version: (1.0.0)			<span class="hljs-comment"># 项目版本号</span>
@@ -26,7 +26,7 @@ license: (ISC)				<span class="hljs-comment"># 许可证类型</span>
 <blockquote>
 <p>version （1.0.0）中， 数字从左往右依次为 [大版本号].[次版本号].[修订版本号], 当软件有重大更新时增加大版本号， 有增加功能时增加次版本号， 有修正 BUG 时增加修订版本号</p>
 </blockquote>
-<ul>
+<ul class="markdown-body-ul">
 <li><p><code>npm install</code> - 用于安装一个(或一组包)</p>
 <pre><code class="hljs language-sh">npm install &lt;包名&gt;
 npm install &lt;包名&gt;@&lt;1.0.0&gt;		<span class="hljs-comment"># 安装指定版本号的包</span>
@@ -38,7 +38,7 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 <li><p><code>npm config list</code> - 用于展示 npm 配置信息</p>
 <img src="http://localhost:6363/article/【Nodejs】- 基本工具及配置/【Nodejs】- 基本工具及配置.assets/image-20240109203734147.png">
 
-<ul>
+<ul class="markdown-body-ul">
 <li>registry - 当前源地址</li>
 </ul>
 </li>
@@ -46,25 +46,25 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 <pre><code class="hljs language-sh">npm config <span class="hljs-built_in">set</span> register <span class="hljs-string">&quot;https://registry.npmmirror.com/&quot;</span>	<span class="hljs-comment"># 设置 taobao 源</span>
 </code></pre></li>
 </ul>
-<h3>1.2 npm install 原理</h3>
+<h3 id="1.2 npm install 原理">1.2 npm install 原理</h3>
 <hr>
-<h4>1.2.1 执行 npm install 时的过程</h4>
+<h4 id="1.2.1 执行 npm install 时的过程">1.2.1 执行 npm install 时的过程</h4>
 <blockquote>
 <p>首先安装的依赖都会存放在根目录的node_modules,默认采用扁平化的方式安装，并且排序规则.bin第一个然后@系列，再然后按照首字母排序abcd等，并且使用的算法是广度优先遍历，在遍历依赖树时，npm会首先处理项目根目录下的依赖，然后逐层处理每个依赖包的依赖，直到所有依赖都被处理完毕。在处理每个依赖时，npm会检查该依赖的版本号是否符合依赖树中其他依赖的版本要求，如果不符合，则会尝试安装适合的版本</p>
 </blockquote>
 <p>![image-20240109205908906](./【Nodejs】- 基本工具及配置.assets\image-20240109205908906.png)</p>
-<h4>1.2.2 什么是扁平化</h4>
+<h4 id="1.2.2 什么是扁平化">1.2.2 什么是扁平化</h4>
 <img src="http://localhost:6363/article/【Nodejs】- 基本工具及配置/【Nodejs】- 基本工具及配置.assets\image-20240109210105083.png">
 
 <p>当两个不同的一级模块共同依赖<strong>同一模块且版本号相同</strong>时将会提升该二级模块至一级以复用该模块</p>
-<h4>1.2.3 npm install 后续流程</h4>
+<h4 id="1.2.3 npm install 后续流程">1.2.3 npm install 后续流程</h4>
 <img src="http://localhost:6363/article/【Nodejs】- 基本工具及配置/【Nodejs】- 基本工具及配置.assets\image-20240109210508067.png">
 
-<ul>
+<ul class="markdown-body-ul">
 <li>.npmrc 文件相当于 npm 配置文件</li>
 </ul>
-<h4>1.2.4 package-lock.json 配置简析</h4>
-<ul>
+<h4 id="1.2.4 package-lock.json 配置简析">1.2.4 package-lock.json 配置简析</h4>
+<ul class="markdown-body-ul">
 <li><p><code>version</code> 该参数指定了当前包的版本号</p>
 </li>
 <li><p><code>resolved</code> 该参数指定了当前包的下载地址</p>
@@ -86,39 +86,39 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 <blockquote>
 <p>具体缓存地址可以通过 <code>npm config list</code> 或 <code>npm config ls -l</code> 查看</p>
 </blockquote>
-<h3>1.3 npm 生命周期</h3>
+<h3 id="1.3 npm 生命周期">1.3 npm 生命周期</h3>
 <hr>
 <p>![image-20240109212907135](./【Nodejs】- 基本工具及配置.assets\image-20240109212907135.png)</p>
 <p>在执行 <code>npm run life</code> 时会先执行一次 <code>prelife</code> 对应的命令， 然后执行一次 <code>life</code> 对应的命令， 最后执行一次 <code>postlife</code> 对应的命令</p>
 <blockquote>
 <p>该命令配置往往非常有用， 比如在测试时删除上次测试文件(vue-cli)， 或更新代码后先删除上一次的文件再重新编译生成新的文件</p>
 </blockquote>
-<h3>1.4 npx 命令行工具</h3>
+<h3 id="1.4 npx 命令行工具">1.4 npx 命令行工具</h3>
 <hr>
-<h4>1.4.1 npx 是什么？</h4>
+<h4 id="1.4.1 npx 是什么？">1.4.1 npx 是什么？</h4>
 <p><code>npx</code> 是 <code>npm</code> 5.2.0版本中新增的功能。它允许用户在不安装全局包的情况下，运行已安装在本地项目中的包或者远程仓库中的包。</p>
-<h4>1.4.2 npx 相较于 npm 优势</h4>
-<ul>
+<h4 id="1.4.2 npx 相较于 npm 优势">1.4.2 npx 相较于 npm 优势</h4>
+<ul class="markdown-body-ul">
 <li>无需全局安装包 - 可以在任何地方执行包命令</li>
 <li>总是使用最新版本包</li>
 </ul>
-<h4>1.4.3 npx 相较于 npm 区别</h4>
-<ul>
+<h4 id="1.4.3 npx 相较于 npm 区别">1.4.3 npx 相较于 npm 区别</h4>
+<ul class="markdown-body-ul">
 <li><code>npx</code> 重在执行命令</li>
 <li><code>npm</code> 重在包的安装、卸载与管理</li>
 </ul>
-<h2>2. 模块化</h2>
+<h2 id="2. 模块化">2. 模块化</h2>
 <blockquote>
 <p>注意:</p>
-<ol>
+<ol class="markdown-body-ol">
 <li>在 package.json 的 type 属性中指定使用的 模块化规范</li>
 <li>尽量使用相同的规范以形成引入规范一致性</li>
 </ol>
 </blockquote>
-<h3>2.1. CommonJS 规范</h3>
+<h3 id="2.1. CommonJS 规范">2.1. CommonJS 规范</h3>
 <hr>
-<h4>2.1.1 引入格式</h4>
-<ul>
+<h4 id="2.1.1 引入格式">2.1.1 引入格式</h4>
+<ul class="markdown-body-ul">
 <li><p>支持引入内置模块例如 <code>http</code> <code>os</code> <code>fs</code> <code>child_process</code> 等 nodejs 内置模块</p>
 </li>
 <li><p>支持引入第三方模块<code>express</code> <code>md5</code> <code>koa</code> 等</p>
@@ -130,18 +130,18 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 </ul>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;node:fs&quot;</span>);    <span class="hljs-comment">// 高版本 nodejs, node: 仅作为高版本(16+)引入标记 </span>
 <span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);      	  <span class="hljs-comment">// 全版本 nodejs</span>
-</code></pre><h4>2.1.2 导出格式</h4>
+</code></pre><h4 id="2.1.2 导出格式">2.1.2 导出格式</h4>
 <pre><code class="hljs language-js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {			<span class="hljs-comment">// 导出对象</span>
     <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;tk_wang&quot;</span>,
     <span class="hljs-attr">fn</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-number">123</span>,
 }
 
 <span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-string">&quot;abc&quot;</span>		<span class="hljs-comment">// 导出值</span>
-</code></pre><h4>2.1.3 引入 .json 文件</h4>
+</code></pre><h4 id="2.1.3 引入 .json 文件">2.1.3 引入 .json 文件</h4>
 <pre><code class="hljs language-js"><span class="hljs-keyword">const</span> data = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./data.json&#x27;</span>);
-</code></pre><h3>2.2 ESM 规范</h3>
-<h4>2.2.1 引入格式</h4>
-<ul>
+</code></pre><h3 id="2.2 ESM 规范">2.2 ESM 规范</h3>
+<h4 id="2.2.1 引入格式">2.2.1 引入格式</h4>
+<ul class="markdown-body-ul">
 <li><p>引入 nodejs 内置模块</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:fs&#x27;</span>;
 </code></pre></li>
@@ -162,8 +162,8 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> data <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./data.json&#x27;</span> assert { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;json&#x27;</span> }
 </code></pre></li>
 </ul>
-<h4>2.2.2 导出格式</h4>
-<ul>
+<h4 id="2.2.2 导出格式">2.2.2 导出格式</h4>
+<ul class="markdown-body-ul">
 <li><p>导出对象</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> xxx = xxx;
 </code></pre></li>
@@ -171,8 +171,8 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 <pre><code class="hljs language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> xxx;
 </code></pre></li>
 </ul>
-<h3>2.3 Cjs 与 ESM 区别</h3>
-<ol>
+<h3 id="2.3 Cjs 与 ESM 区别">2.3 Cjs 与 ESM 区别</h3>
+<ol class="markdown-body-ol">
 <li><p>Cjs 是基于运行时的同步加载，esm 是基于编译时的异步加载</p>
 </li>
 <li><p>Cjs 是可以修改值的，esm 值并且不可修改（可读的）</p>
@@ -182,7 +182,7 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 <li><p>commonjs 中顶层的this指向这个模块本身，而ES6中顶层this指向undefined</p>
 </li>
 </ol>
-<h4>2.3.1 Cjs 与 ESM 动态引入</h4>
+<h4 id="2.3.1 Cjs 与 ESM 动态引入">2.3.1 Cjs 与 ESM 动态引入</h4>
 <pre><code class="hljs language-js"><span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span>) {
     <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;xxx&#x27;</span>);
 }
@@ -191,16 +191,16 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
         <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res);
     })
 }
-</code></pre><h2>3. 全局变量</h2>
-<h3>3.1 Nodejs 内置全局API</h3>
+</code></pre><h2 id="3. 全局变量">3. 全局变量</h2>
+<h3 id="3.1 Nodejs 内置全局API">3.1 Nodejs 内置全局API</h3>
 <hr>
-<h4>3.1.1 普通内置 API</h4>
-<ol>
+<h4 id="3.1.1 普通内置 API">3.1.1 普通内置 API</h4>
+<ol class="markdown-body-ol">
 <li>__dirname - 获取当前文件执行的绝对目录(不含该文件名)</li>
 <li>__filename - 获取当前文件执行的绝对路径(含该文件名)</li>
 </ol>
-<h4>3.1.2 process</h4>
-<ul>
+<h4 id="3.1.2 process">3.1.2 process</h4>
+<ul class="markdown-body-ul">
 <li><p><code>process.argv</code> - 获取执行时命令后参数及执行路径信息</p>
 <p>![image-20240110161734025](./【Nodejs】- 基本工具及配置.assets\image-20240110161734025.png)</p>
 </li>
@@ -212,13 +212,13 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 <pre><code class="hljs language-js">process.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;exit&#x27;</span>, <span class="hljs-function">() =&gt;</span> { <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;xxx&quot;</span>) });
 </code></pre></li>
 </ul>
-<h4>3.1.3 Buffer （待补充）</h4>
-<h2>4. CSR SSR SEO</h2>
-<h3>4.1 在 Nodejs 中操作 DOM</h3>
+<h4 id="3.1.3 Buffer （待补充）">3.1.3 Buffer （待补充）</h4>
+<h2 id="4. CSR SSR SEO">4. CSR SSR SEO</h2>
+<h3 id="4.1 在 Nodejs 中操作 DOM">4.1 在 Nodejs 中操作 DOM</h3>
 <hr>
-<h4>4.1.1 模块条件</h4>
+<h4 id="4.1.1 模块条件">4.1.1 模块条件</h4>
 <pre><code class="hljs language-sh">npm install jsdom
-</code></pre><h4>4.1.2 使用</h4>
+</code></pre><h4 id="4.1.2 使用">4.1.2 使用</h4>
 <pre><code class="hljs language-js"><span class="hljs-keyword">const</span> { <span class="hljs-variable constant_">JSDOM</span> } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;jsdom&#x27;</span>);		<span class="hljs-comment">// 引入 JSDOM 构造函数</span>
 <span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;node:fs&#x27;</span>);
 
@@ -242,47 +242,47 @@ npm install &lt;包名&gt; -g				<span class="hljs-comment"># 全局安装包</s
 })
 </code></pre><blockquote>
 <p>注意： </p>
-<ol>
+<ol class="markdown-body-ol">
 <li>fetch 函数只有 node 版本 &gt;= 18 才存在。</li>
 <li>fetch 函数接收数据需要先转 json, 再使用</li>
 </ol>
 </blockquote>
-<h3>4.2 CSR 与 SSR</h3>
+<h3 id="4.2 CSR 与 SSR">4.2 CSR 与 SSR</h3>
 <hr>
-<h4>4.2.1 CSR 客户端渲染 与 SSR 服务端渲染 区别</h4>
-<ol>
+<h4 id="4.2.1 CSR 客户端渲染 与 SSR 服务端渲染 区别">4.2.1 CSR 客户端渲染 与 SSR 服务端渲染 区别</h4>
+<ol class="markdown-body-ol">
 <li><p>页面加载方式：</p>
-<ul>
+<ul class="markdown-body-ul">
 <li>CSR：在 CSR 中，服务器返回一个初始的 HTML 页面，然后浏览器下载并执行 JavaScript 文件，JavaScript 负责动态生成并更新页面内容。这意味着初始页面加载时，内容较少，页面结构和样式可能存在一定的延迟。</li>
 <li>SSR：在 SSR 中，服务器在返回给浏览器之前，会预先在服务器端生成完整的 HTML 页面，包含了初始的页面内容。浏览器接收到的是已经渲染好的 HTML 页面，因此初始加载的速度较快。</li>
 </ul>
 </li>
 <li><p>内容生成和渲染：</p>
-<ul>
+<ul class="markdown-body-ul">
 <li>CSR：在 CSR 中，页面的内容生成和渲染是由客户端的 JavaScript 脚本负责的。当数据变化时，JavaScript 会重新生成并更新 DOM，从而实现内容的动态变化。这种方式使得前端开发更加灵活，可以创建复杂的交互和动画效果。</li>
 <li>SSR：在 SSR 中，服务器在渲染页面时会执行应用程序的代码，并生成最终的 HTML 页面。这意味着页面的初始内容是由服务器生成的，对于一些静态或少变的内容，可以提供更好的首次加载性能。</li>
 </ul>
 </li>
 <li><p>用户交互和体验：</p>
-<ul>
+<ul class="markdown-body-ul">
 <li>CSR：在 CSR 中，一旦初始页面加载完成，后续的用户交互通常是通过 AJAX 或 WebSocket 与服务器进行数据交互，然后通过 JavaScript 更新页面内容。这种方式可以提供更快的页面切换和响应速度，但对于搜索引擎爬虫和 SEO（搜索引擎优化）来说，可能需要一些额外的处理。</li>
 <li>SSR：在 SSR 中，由于页面的初始内容是由服务器生成的，因此用户交互可以直接在服务器上执行，然后服务器返回更新后的页面。这样可以提供更好的首次加载性能和对搜索引擎友好的内容。</li>
 </ul>
 </li>
 </ol>
-<h4>4.2.2 SEO 搜索引擎优化</h4>
+<h4 id="4.2.2 SEO 搜索引擎优化">4.2.2 SEO 搜索引擎优化</h4>
 <p><strong>CSR 不利于 SEO， 爬虫无法从源代码中抓取更多相关信息</strong></p>
 <p>![image-20240110170527485](./【Nodejs】- 基本工具及配置.assets\image-20240110170527485.png)</p>
 <p><strong>SSR 利于 SEO， 源代码中信息较多， 爬虫可以从中抓取更多信息</strong></p>
 <p>![image-20240110170804933](./【Nodejs】- 基本工具及配置.assets\image-20240110170804933.png)</p>
-<h4>4.2.3 SEO 三个关键 - TDK</h4>
-<ul>
+<h4 id="4.2.3 SEO 三个关键 - TDK">4.2.3 SEO 三个关键 - TDK</h4>
+<ul class="markdown-body-ul">
 <li>T - title</li>
 <li>D - meta 中 description</li>
 <li>K - meta 中 Keywords</li>
 </ul>
-<h4>4.2.4 适用场景</h4>
-<ul>
+<h4 id="4.2.4 适用场景">4.2.4 适用场景</h4>
+<ul class="markdown-body-ul">
 <li>CSR - ToB, 例如后台管理系统</li>
 <li>SSR - ToC, 例如门户网站， 博客等</li>
 </ul>

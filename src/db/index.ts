@@ -4,7 +4,7 @@
  */
 
 import { Sequelize } from "sequelize";
-import dbConf from '../../public/config/mysql.conf';
+import dbConf from '../../public/config/mysql.config';
 
 const { database, user, password, host, port } = dbConf;
 

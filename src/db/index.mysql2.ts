@@ -3,7 +3,7 @@
  * @description 废弃 - mysql2 数据库连接模块
  */
 
-import dbConf from '../../public/config/mysql.conf';
+import dbConf from '../../public/config/mysql.config';
 import mysql, { Pool, PoolConnection } from 'mysql2/promise';
 
 let pool: Pool; // 连接池
