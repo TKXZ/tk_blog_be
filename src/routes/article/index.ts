@@ -19,17 +19,17 @@ const router: Router = express.Router();
 // 获取文章列表
 router.get('/list', async (req, res) => {
   const query = req.query;
-  const { search = '', page } = query as any;
+  const { search = '', page, size } = query as any;
 
-  let list: Article[] = [];
-  if (search) {
-    list = await getList(search) as Article[];
-  } else if (search && page) {
-    list = await getList(search, page) as Article[];
+  let list: ArticleRecord;
+  if (search && page) {
+    list = await getList(search, page, size) as ArticleRecord;
+  } else if (search) {
+    list = await getList(search, 1, size) as ArticleRecord;
   } else if (page) {
-    list = await getList('', page) as Article[];
+    list = await getList('', page, size) as ArticleRecord;
   } else {
-    list = await getList() as Article[];
+    list = await getList() as ArticleRecord;
   }
 
   res.send(wrapperSuccess(list));
@@ -63,13 +63,17 @@ router.get('/detail/:id', async (req, res) => {
     }
   }
 
-  const htmlContent = fs.readFileSync(htmlFilePath).toString('utf-8');
-  const catalog = fs.readFileSync(catalogFilePath).toString('utf-8')
+  try {
+    const htmlContent = fs.readFileSync(htmlFilePath).toString('utf-8');
+    const catalog = fs.readFileSync(catalogFilePath).toString('utf-8')
 
-  res.send(wrapperSuccess({
-    htmlContent,
-    catalog
-  }))
+    res.send(wrapperSuccess({
+      htmlContent,
+      catalog
+    }))
+  } catch (err: any) {
+    console.error(err.message)
+  }
 })
 
 export default router;

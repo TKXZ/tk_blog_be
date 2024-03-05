@@ -22,7 +22,11 @@ const getList = async (search: string = '', page: number = 1, pageSize: number =
 
   try {
     const articleList = await query(sql);
-    return articleList;
+    const count = await getArticleCount(search)
+    return {
+      articleList,
+      count
+    };
   } catch (err: any) {
     console.error('查询文章列表错误', err.message);
   }
@@ -41,6 +45,21 @@ const findOneById = async (id: number) => {
     return article;
   } catch (err: any) {
     console.error('查询文章数据错误', err.message);
+  }
+}
+
+const getArticleCount = async (search: string = ''): Promise<number | void> => {
+  let where = 'WHERE 1=1'
+  if (search) {
+    where += ` AND title LIKE "%${search}%"`;
+  }
+  const sql = `SELECT COUNT (*) AS count FROM articles ${where}`;
+
+  try {
+    const [{ count }] = await query(sql) as any;
+    return count;
+  } catch (err) {
+    console.error('获取文章总量错误', err)
   }
 }
 

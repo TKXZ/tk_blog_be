@@ -1,4 +1,4 @@
-declare type Article = {
+declare interface Article {
   id: number
   title: string
   desc: string
@@ -9,4 +9,9 @@ declare type Article = {
   filePath: string
   publishTime: string
   modifyTime: string,
+}
+
+declare interface ArticleRecord {
+  articleList: Article[],
+  count: number,
 }
