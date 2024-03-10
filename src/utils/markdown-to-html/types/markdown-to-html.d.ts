@@ -1,6 +1,6 @@
-import { Catalog } from "../../marked/extention";
+import { Catalog } from '../../marked/extention'
 
 declare interface ParsedMd {
-  articleContent: string;
-  articleCatalog: Catalog[];
+  articleContent: string
+  articleCatalog: Catalog[]
 }

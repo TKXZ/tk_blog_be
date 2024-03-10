@@ -7,11 +7,11 @@ declare interface Article {
   category: number
   categoryText: string
   filePath: string
-  publishTime: string
-  modifyTime: string,
+  createdAt: string
+  updatedAt: string
 }
 
 declare interface ArticleRecord {
-  articleList: Article[],
-  count: number,
+  articleList: Article[]
+  count: number
 }

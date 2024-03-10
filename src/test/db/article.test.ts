@@ -3,10 +3,10 @@
  * @description 数据库测试 article
  */
 
-import Article from "../../model/article.model";
-import path from 'node:path';
-import { query } from "../../db";
-import { LOCAL_ARTICLE_FILE_PATH } from "../../../public/config/local-path";
+import Article from '../../model/article.model'
+import path from 'node:path'
+import { query } from '../../db'
+import { LOCAL_ARTICLE_FILE_PATH } from '../../../public/config/local-path'
 
 const create = async () => {
   const article = await Article.create({
@@ -16,7 +16,10 @@ const create = async () => {
     views: 0,
     category: 1,
     categoryText: 'NodeJS',
-    filePath: path.join(LOCAL_ARTICLE_FILE_PATH, '【Nodejs】- 基本工具及配置/【Nodejs】- 基本工具及配置.md'),
+    filePath: path.join(
+      LOCAL_ARTICLE_FILE_PATH,
+      '【Nodejs】- 基本工具及配置/【Nodejs】- 基本工具及配置.md',
+    ),
     publishTime: '2024-1-1',
     modifyTime: '2024-1-1',
   })
@@ -24,9 +27,9 @@ const create = async () => {
 }
 
 const findById = async (id = 1) => {
-  const article = await query(`SELECT * FROM articles WHERE id = ${id}`);
-  console.log(article);
+  const article = await query(`SELECT * FROM articles WHERE id = ${id}`)
+  console.log(article)
 }
 
 // create();
-findById();
+findById()

@@ -1,5 +1,5 @@
-import { Tokens } from "marked";
+import { Tokens } from 'marked'
 
 declare interface Catalog extends Tokens.Heading {
-  children?: Tokens.Heading[];
+  children?: Tokens.Heading[]
 }

@@ -3,77 +3,118 @@
  * @description article router
  */
 
-import express, { Router } from 'express';
-import path from 'node:path';
-import fs from 'node:fs';
-import { wrapperSuccess, wrapperFailure } from '../../utils/wrapper-result';
-import { parseMd } from '../../utils/markdown-to-html';
-import type { ParsedMd } from '../../utils/markdown-to-html/types/markdown-to-html';
-import { getList, findOneById } from '../../controller/article.controller';
-import { article2Html, checkExistHtml, PUBLIC_ARTICLE_FOLDER_PATH, saveCatalog2File } from './utils';
-import { Catalog } from '../../utils/marked/extention';
+import express, { Router } from 'express'
+import path from 'node:path'
+import fs from 'node:fs'
+import {
+  wrapperSuccess,
+  wrapperFailure,
+} from '../../utils/wrapper-result'
+import { parseMd } from '../../utils/markdown-to-html'
+import type { ParsedMd } from '../../utils/markdown-to-html/types/markdown-to-html'
+import {
+  getList,
+  findOneById,
+} from '../../controller/article.controller'
+import {
+  article2Html,
+  checkExistHtml,
+  PUBLIC_ARTICLE_FOLDER_PATH,
+  saveCatalog2File,
+} from './utils'
+import { Catalog } from '../../utils/marked/types/extention'
 
-const router: Router = express.Router();
-
+const router: Router = express.Router()
 
 // 获取文章列表
 router.get('/list', async (req, res) => {
-  const query = req.query;
-  const { search = '', page, size } = query as any;
+  const query = req.query
+  const { search = '', page, size } = query as any
 
-  let list: ArticleRecord;
+  let list: ArticleRecord
   if (search && page) {
-    list = await getList(search, page, size) as ArticleRecord;
+    list = (await getList(
+      search,
+      page,
+      size,
+    )) as ArticleRecord
   } else if (search) {
-    list = await getList(search, 1, size) as ArticleRecord;
+    list = (await getList(search, 1, size)) as ArticleRecord
   } else if (page) {
-    list = await getList('', page, size) as ArticleRecord;
+    list = (await getList('', page, size)) as ArticleRecord
   } else {
-    list = await getList() as ArticleRecord;
+    list = (await getList()) as ArticleRecord
   }
 
-  res.send(wrapperSuccess(list));
+  if (list) {
+    res.send(wrapperSuccess(list))
+  } else {
+    res.send(
+      wrapperFailure(10000, 'Get article list error'),
+    )
+  }
 })
 
 // 获取文章详情
 router.get('/detail/:id', async (req, res) => {
-  const params = req.params;
-  const { id } = params;
+  const params = req.params
+  const { id } = params
 
-  const [article] = await findOneById(parseInt(id)) as any;
-  const { filePath, title } = article;
+  const [article] = (await findOneById(parseInt(id))) as any
+  const { filePath, title } = article
 
-  let htmlFilePath = '';
-  let catalogFilePath = '';
+  let htmlFilePath = ''
+  let catalogFilePath = ''
   let articleCatalog: Catalog[] = []
 
   // 先检查解析后的html文件是否存在
   // 存在 - 直接读取
   // 不存在 - 解析后读取
   if (checkExistHtml(title)) {
-    htmlFilePath = path.join(PUBLIC_ARTICLE_FOLDER_PATH, title, title + '.html');
-    catalogFilePath = path.join(PUBLIC_ARTICLE_FOLDER_PATH, title, title + '.json');
+    htmlFilePath = path.join(
+      PUBLIC_ARTICLE_FOLDER_PATH,
+      title,
+      title + '.html',
+    )
+    catalogFilePath = path.join(
+      PUBLIC_ARTICLE_FOLDER_PATH,
+      title,
+      title + '.json',
+    )
   } else {
-    const parsedMd = await parseMd(filePath, title);
+    const parsedMd = await parseMd(filePath, title)
     if (parsedMd) {
-      const { articleContent, articleCatalog: ac } = parsedMd;
-      articleCatalog = ac;
-      htmlFilePath = article2Html(articleContent, title);
-      catalogFilePath = saveCatalog2File(title, articleCatalog);
+      const { articleContent, articleCatalog: ac } =
+        parsedMd
+      articleCatalog = ac
+      htmlFilePath = article2Html(articleContent, title)
+      catalogFilePath = saveCatalog2File(
+        title,
+        articleCatalog,
+      )
     }
   }
 
   try {
-    const htmlContent = fs.readFileSync(htmlFilePath).toString('utf-8');
-    const catalog = fs.readFileSync(catalogFilePath).toString('utf-8')
+    const htmlContent = fs
+      .readFileSync(htmlFilePath)
+      .toString('utf-8')
+    const catalog = fs
+      .readFileSync(catalogFilePath)
+      .toString('utf-8')
 
-    res.send(wrapperSuccess({
-      htmlContent,
-      catalog
-    }))
+    res.send(
+      wrapperSuccess({
+        htmlContent,
+        catalog,
+      }),
+    )
   } catch (err: any) {
     console.error(err.message)
+    res.send(
+      wrapperFailure(10001, 'Get article detail error'),
+    )
   }
 })
 
-export default router;
+export default router

@@ -8,4 +8,4 @@ const FILE_SERVER_CONFIG = {
   article: 'http://localhost:6363/article',
 }
 
-export default FILE_SERVER_CONFIG;
+export default FILE_SERVER_CONFIG

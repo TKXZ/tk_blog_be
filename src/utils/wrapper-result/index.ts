@@ -7,15 +7,12 @@ function wrapperSuccess(data: any, message: string = 'success') {
   return {
     errno: 0,
     data,
-    message
+    message,
   }
 }
 
 function wrapperFailure(errno: number = -1, message: string = 'failed') {
-  return { errno, message, }
+  return { errno, message }
 }
 
-export {
-  wrapperSuccess,
-  wrapperFailure,
-}
+export { wrapperSuccess, wrapperFailure }

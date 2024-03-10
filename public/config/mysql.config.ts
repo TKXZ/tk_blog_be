@@ -3,13 +3,13 @@
  * @description 数据库配置
  */
 
-import path from 'node:path';
-import os from 'node:os';
-import fs from 'node:fs';
+import path from 'node:path'
+import os from 'node:os'
+import fs from 'node:fs'
 
 interface Auth {
-  username: string,
-  password: string,
+  username: string
+  password: string
 }
 
 let auth: Auth = {
@@ -18,12 +18,12 @@ let auth: Auth = {
 }
 
 // 读取数据库验证信息
-const sqlAuthPath = path.resolve(os.homedir(), '.tk_blog_data/database.json');
+const sqlAuthPath = path.resolve(os.homedir(), '.tk_blog_data/database.json')
 try {
-  const _auth = fs.readFileSync(sqlAuthPath, { encoding: 'utf-8', flag: 'r' });
-  auth = JSON.parse(_auth);
+  const _auth = fs.readFileSync(sqlAuthPath, { encoding: 'utf-8', flag: 'r' })
+  auth = JSON.parse(_auth)
 } catch (err: any) {
-  console.error('获取数据库验证数据错误', err.message);
+  console.error('获取数据库验证数据错误', err.message)
 }
 
 // 数据库连接配置
@@ -35,4 +35,4 @@ const dbConfig = {
   database: 'tk_blog',
 }
 
-export default dbConfig;
+export default dbConfig
