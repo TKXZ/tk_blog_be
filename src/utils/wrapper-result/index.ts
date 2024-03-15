@@ -15,4 +15,9 @@ function wrapperFailure(errno: number = -1, message: string = 'failed') {
   return { errno, message }
 }
 
-export { wrapperSuccess, wrapperFailure }
+async function wrapperResult(resPromise: Promise<any>) {
+  const res = await resPromise
+  return res
+}
+
+export { wrapperSuccess, wrapperFailure, wrapperResult }

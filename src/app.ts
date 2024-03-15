@@ -1,31 +1,35 @@
-import express, { Express } from 'express'
+import 'reflect-metadata'
 import process from 'node:process'
 import path from 'node:path'
+import express from 'express'
+import { Container } from 'inversify'
+import { InversifyExpressServer } from 'inversify-express-utils'
+import { PrismaClient } from '@prisma/client'
+import { PrismaDB } from './db'
+import { ArticleController } from './modules/article/article.controller'
+import { ArticleService } from './modules/article/article.service'
 
 import cors from './middleware/cors'
 
-import sequelize from './db'
-// import { syncDatabaseTable } from './model/sync';
+const container = new Container()
+const server = new InversifyExpressServer(container)
 
-import articleRouter from './routes/article'
-
-process.on('exit', () => {
-  if (sequelize) {
-    sequelize.close()
+container.bind<PrismaClient>('PrismaClient').toFactory(() => {
+  return () => {
+    return new PrismaClient()
   }
-  console.log('程序退出')
 })
+container.bind(PrismaDB).toSelf()
+container.bind(ArticleService).to(ArticleService)
+container.bind(ArticleController).to(ArticleController)
 
-const app: Express = express()
-app.use(cors)
-app.use(express.json())
-
-app.use(express.static(path.join(process.cwd(), 'public')))
-
-app.use('/article', articleRouter)
+server.setConfig((app) => {
+  app.use(cors)
+  app.use(express.static(path.join(process.cwd(), 'public')))
+  app.use(express.json())
+})
+const app = server.build()
 
 app.listen(3636, () => {
-  console.log('服务启动成功')
+  console.log('Server start on http://localhost:3636')
 })
-
-// syncDatabaseTable();

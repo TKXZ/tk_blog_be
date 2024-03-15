@@ -1,4 +1,4 @@
-import FILE_SERVER_CONFIG from '../../../public/config/file-server.config'
+import FILE_SERVER_CONFIG from '../../../../public/config/file-server.config'
 
 /**
  * 装饰文章Html
@@ -72,7 +72,7 @@ const addLinkToTitle = (mdHtmlStr: string): string => {
     if (matchedArr && matchedArr.length > 0) {
       const h_tag = matchedArr[1]
       const title = matchedArr[2]
-      res = res.replace(t, `<${h_tag} id="${title}">${title}</${h_tag}>`)
+      res = res.replace(t, `<${h_tag} id="${title}" class="markdown-heading">${title}</${h_tag}>`)
     }
   })
   return res
